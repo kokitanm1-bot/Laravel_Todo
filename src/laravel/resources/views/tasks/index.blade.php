@@ -77,7 +77,7 @@
                         <span class="label {{ $task->status_class }}">{{ $task->status_label }}</span>
                     </td>
                     <!-- タスクの期限を表示する -->
-                    <td>{{ $task->due_date }}</td>
+                    <td>{{ $task->formatted_due_date }}</td>
                     <!-- 編集と削除のリンクを表示する -->
                     <td><a href="#">編集</a></td>
                     <td><a href="#">削除</a></td>

@@ -20,7 +20,7 @@ class TaskController extends Controller
 
         $folder = Folder::find($id);
 
-        $tasks = Task::where('folder_id', $folder->id)->get();
+        $tasks = $folder->tasks()->get();
 
         return view('tasks/index', [
             'folders' => $folders,
