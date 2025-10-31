@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 // フォルダーモデルを名前空間でインポートする
 use App\Models\Folder;
 
+// FormRequestクラスを名前空間でインポートする
+use App\Http\Requests\CreateFolder;
+
 class FolderController extends Controller
 {
     /**
@@ -21,15 +24,16 @@ class FolderController extends Controller
         // view('遷移先のbladeファイル名');
         return view('folders/create');
     }
-    
+
     /**
      *  【フォルダの作成機能】
      *  
      *  POST /folders/create
      *  @param Request $request （リクエストクラスの$request）
      *  @return \Illuminate\Http\RedirectResponse
+     *  @var App\Http\Requests\CreateFolder
      */
-    public function create(Request $request)
+    public function create(CreateFolder $request)
     {
         /* 新規作成のフォルダー名（タイトル）をDBに書き込む処理 */
         // フォルダモデルのインスタンスを作成する
