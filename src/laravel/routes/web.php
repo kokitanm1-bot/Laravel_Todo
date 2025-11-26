@@ -30,3 +30,7 @@ Route::get('/', function () {
 
 Route::get('/folders/create', [FolderController::class,"showCreateForm"])->name('folders.create');
 Route::post('/folders/create', [FolderController::class,"create"]);
+
+/* folders new edit page */
+Route::get('/folders/{id}/edit', [FolderController::class,"showEditForm"])->name('folders.edit');
+Route::post('/folders/{id}/edit', [FolderController::class,"edit"]);

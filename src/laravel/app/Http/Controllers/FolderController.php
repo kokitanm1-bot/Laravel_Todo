@@ -10,6 +10,8 @@ use App\Models\Folder;
 // FormRequestクラスを名前空間でインポートする
 use App\Http\Requests\CreateFolder;
 
+use App\Http\Requests\EditFolder;
+
 class FolderController extends Controller
 {
     /**
@@ -49,6 +51,43 @@ class FolderController extends Controller
         // 連想配列：['キー（テンプレート側で参照する際の変数名）' => '渡したい変数']
         // redirect():リダイレクトを実施する関数
         // route():ルートPathを指定する関数
+        return redirect()->route('tasks.index', [
+            'id' => $folder->id,
+        ]);
+    }
+
+    /**
+     *  【フォルダ編集ページの表示機能】
+     *
+     *  GET /folders/{id}/edit
+     *  @param int $id
+     *  @return \Illuminate\View\View
+     */
+    public function showEditForm(int $id)
+    {
+        $folder = Folder::find($id);
+
+        return view('folders/edit', [
+            'folder_id' => $folder->id,
+            'folder_title' => $folder->title,
+        ]);
+    }
+
+    /**
+     *  【フォルダの編集機能】
+     *
+     *  POST /folders/{id}/edit
+     *  @param int $id
+     *  @param EditTask $request
+     *  @return \Illuminate\Http\RedirectResponse
+     */
+    public function edit(int $id, EditFolder $request)
+    {
+        $folder = Folder::find($id);
+
+        $folder->title = $request->title;
+        $folder->save();
+
         return redirect()->route('tasks.index', [
             'id' => $folder->id,
         ]);
