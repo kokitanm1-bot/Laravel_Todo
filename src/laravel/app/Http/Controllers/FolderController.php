@@ -110,4 +110,26 @@ class FolderController extends Controller
             'folder_title' => $folder->title,
         ]);
     }
+
+    /**
+    *  【フォルダの削除機能】
+    *  機能：フォルダが削除されたらDBから削除し、フォルダ一覧にリダイレクトする
+    *
+    *  POST /folders/{id}/delete
+    *  @param int $id
+    *  @return RedirectResponse
+    */
+    public function delete(int $id)
+    {
+        $folder = Folder::find($id);
+
+        $folder->tasks()->delete();
+        $folder->delete();
+
+        $folder = Folder::first();
+
+        return redirect()->route('tasks.index', [
+            'id' => $folder->id
+        ]);
+    }
 }
