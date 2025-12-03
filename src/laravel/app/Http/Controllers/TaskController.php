@@ -65,4 +65,22 @@ class TaskController extends Controller
             'id' => $folder->id,
         ]);
     }
+
+    /**
+     *  【タスク編集ページの表示機能】
+     *  機能：タスクIDをフォルダ編集ページに渡して表示する
+     *  
+     *  GET /folders/{id}/tasks/{task_id}/edit
+     *  @param int $id
+     *  @param int $task_id
+     *  @return \Illuminate\View\View
+     */
+    public function showEditForm(int $id, int $task_id)
+    {
+        $task = Task::find($task_id);
+
+        return view('tasks/edit', [
+            'task' => $task,
+        ]);
+    }
 }
