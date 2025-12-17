@@ -35,15 +35,17 @@
                 <div class="list-group">
                     <table class="table foler-table">
                         @foreach($folders as $folder)
-                        <tr>
-                            <td>
-                                <a href="{{ route('tasks.index', ['id' => $folder->id]) }}" class="list-group-item {{ $folder_id === $folder->id ? 'active' : '' }}">
-                                    {{ $folder->title }}
-                                </a>
-                            </td>
-                            <td><a href="{{ route('folders.edit', ['id' => $folder->id]) }}">編集</a>
-                            <td><a href="{{ route('folders.delete', ['id' => $folder->id]) }}">削除</a></td>
-                        </tr>
+                            @if($folder->user_id === Auth::user()->id)
+                                <tr>
+                                    <td>
+                                        <a href="{{ route('tasks.index', ['id' => $folder->id]) }}" class="list-group-item {{ $folder_id === $folder->id ? 'active' : '' }}">
+                                            {{ $folder->title }}
+                                        </a>
+                                    </td>
+                                    <td><a href="{{ route('folders.edit', ['id' => $folder->id]) }}">編集</a></td>
+                                    <td><a href="{{ route('folders.delete', ['id' => $folder->id]) }}">削除</a></td>
+                                </tr>
+                            @endif
                         @endforeach
                     </table>
                 </div>
@@ -78,7 +80,7 @@
                                 </td>
                                 <td>{{ $task->formatted_due_date }}</td>
                                 <td><a href="{{ route('tasks.edit', ['id' => $task->folder_id, 'task_id' => $task->id]) }}">編集</a></td>
-                                <td><a href="#">削除</a></td>
+                                <td><a href="{{ route('tasks.delete', ['id' => $task->folder_id, 'task_id' => $task->id]) }}">削除</a></td>
                             </tr>
                         @endforeach
                     </tbody>
