@@ -3,13 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-// フォルダーモデルを名前空間でインポートする
+use Illuminate\Support\Facades\Auth;
 use App\Models\Folder;
-
-// FormRequestクラスを名前空間でインポートする
 use App\Http\Requests\CreateFolder;
-
 use App\Http\Requests\EditFolder;
 
 class FolderController extends Controller
@@ -22,35 +18,34 @@ class FolderController extends Controller
      */
     public function showCreateForm()
     {
-        /* フォルダの新規作成ページを呼び出す */
-        // view('遷移先のbladeファイル名');
-        return view('folders/create');
+        /** @var App\Models\User **/
+        $user = Auth::user();
+        $folder = $user->folders()->findOrFail($id);
+
+        return view('folders/delete', [
+            'folder_id' => $folder->id,
+            'folder_title' => $folder->title,
+        ]);
     }
 
     /**
      *  【フォルダの作成機能】
-     *  
+     *
      *  POST /folders/create
-     *  @param Request $request （リクエストクラスの$request）
+     *  @param CreateFolder $request （Requestクラスの機能は引き継がれる）
      *  @return \Illuminate\Http\RedirectResponse
      *  @var App\Http\Requests\CreateFolder
      */
     public function create(CreateFolder $request)
     {
-        /* 新規作成のフォルダー名（タイトル）をDBに書き込む処理 */
-        // フォルダモデルのインスタンスを作成する
-        $folder = new Folder();
-        // タイトルに入力値を代入する
-        $folder->title = $request->title;
-        // インスタンスの状態をデータベースに書き込む
-        $folder->save();
 
-        /* タスク一覧ページにリダイレクトする */
-        // リダイレクト：別URLへの転送（リクエストされたURLとは別のURLに直ちに再リクエストさせます）
-        // route('遷移先のbladeファイル名', [連想配列：渡したい変数についての情報]);
-        // 連想配列：['キー（テンプレート側で参照する際の変数名）' => '渡したい変数']
-        // redirect():リダイレクトを実施する関数
-        // route():ルートPathを指定する関数
+        $folder = new Folder();
+        $folder->title = $request->title;
+
+        /** @var App\Models\User **/
+        $user = Auth::user();
+        $user->folders()->save($folder);
+
         return redirect()->route('tasks.index', [
             'id' => $folder->id,
         ]);
@@ -65,7 +60,9 @@ class FolderController extends Controller
      */
     public function showEditForm(int $id)
     {
-        $folder = Folder::find($id);
+        /** @var App\Models\User **/
+        $user = Auth::user();
+        $folder = $user->folders()->findOrFail($id);
 
         return view('folders/edit', [
             'folder_id' => $folder->id,
@@ -83,8 +80,9 @@ class FolderController extends Controller
      */
     public function edit(int $id, EditFolder $request)
     {
-        $folder = Folder::find($id);
-
+        /** @var App\Models\User **/
+        $user = Auth::user();
+        $folder = $user->folders()->findOrFail($id);
         $folder->title = $request->title;
         $folder->save();
 
@@ -95,7 +93,6 @@ class FolderController extends Controller
 
     /**
      *  【フォルダ削除ページの表示機能】
-     *  機能：フォルダIDをフォルダ編集ページに渡して表示する
      *
      *  GET /folders/{id}/delete
      *  @param int $id
@@ -103,7 +100,9 @@ class FolderController extends Controller
      */
     public function showDeleteForm(int $id)
     {
-        $folder = Folder::find($id);
+        /** @var App\Models\User **/
+        $user = Auth::user();
+        $folder = $user->folders()->findOrFail($id);
 
         return view('folders/delete', [
             'folder_id' => $folder->id,
@@ -112,16 +111,17 @@ class FolderController extends Controller
     }
 
     /**
-    *  【フォルダの削除機能】
-    *  機能：フォルダが削除されたらDBから削除し、フォルダ一覧にリダイレクトする
-    *
-    *  POST /folders/{id}/delete
-    *  @param int $id
-    *  @return RedirectResponse
-    */
+     *  【フォルダの削除機能】
+     *
+     *  POST /folders/{id}/delete
+     *  @param int $id
+     *  @return RedirectResponse
+     */
     public function delete(int $id)
     {
-        $folder = Folder::find($id);
+        /** @var App\Models\User **/
+        $user = Auth::user();
+        $folder = $user->folders()->findOrFail($id);
 
         $folder->tasks()->delete();
         $folder->delete();
