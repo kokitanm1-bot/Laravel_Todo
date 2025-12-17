@@ -13,7 +13,7 @@ class UsersTableSeeder extends Seeder
     /**
      * Run the database seeds.
      * usersTable用テストデータ
-     * 
+     *
      * @return void
      */
     public function run()
@@ -27,11 +27,11 @@ class UsersTableSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
-        'name' => 'test2',
-        'email' => 'test2345@email.com',
-        'password' => bcrypt('test2345'),
-        'created_at' => Carbon::now(),
-        'updated_at' => Carbon::now(),
+            'name' => 'test2',
+            'email' => 'test2345@email.com',
+            'password' => bcrypt('test2345'),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
     }
 }
