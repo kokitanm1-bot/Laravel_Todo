@@ -7,6 +7,10 @@ use App\Http\Controllers\TaskController;
 
 use App\Http\Controllers\FolderController;
 
+use App\Http\Controllers\HomeController;
+
+use Illuminate\Support\Facades\Auth;
+
 /* index page */
 Route::get("/folders/{id}/tasks", [TaskController::class,"index"])->name("tasks.index");
 /*
@@ -23,6 +27,10 @@ Route::get("/folders/{id}/tasks", [TaskController::class,"index"])->name("tasks.
 /* tasks new create page */
 Route::get('/folders/{id}/tasks/create', [TaskController::class,"showCreateForm"])->name('tasks.create');
 Route::post('/folders/{id}/tasks/create', [TaskController::class,"create"]);
+
+/* tasks new delete page */
+Route::get('/folders/{id}/tasks/{task_id}/delete', [TaskController::class,"showDeleteForm"])->name('tasks.delete');
+Route::post('/folders/{id}/tasks/{task_id}/delete', [TaskController::class,"delete"]);
 
 Route::get('/', function () {
     return view('welcome');
@@ -42,3 +50,9 @@ Route::post('/folders/{id}/tasks/{task_id}/edit', [TaskController::class,"edit"]
 /* folders new delete page */
 Route::get('/folders/{id}/delete', [FolderController::class,"showDeleteForm"])->name('folders.delete');
 Route::post('/folders/{id}/delete', [FolderController::class,"delete"]);
+
+/* home page */
+Route::get('/', [HomeController::class,"index"])->name('home');
+
+/* certification page （会員登録・ログイン・ログアウト・パスワード再設定など） */
+Auth::routes();
