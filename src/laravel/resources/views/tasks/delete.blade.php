@@ -34,7 +34,7 @@
                             </ul>
                         </div>
                         @endif
-                        <form action="{{ route('tasks.delete', ['id' => $task->folder_id, 'task_id' => $task->id]) }}" method="POST">
+                        <form action="{{ route('tasks.delete', ['folder' => $task->folder_id, 'task' => $task->id]) }}" method="POST">
                             @csrf
                             <div class="form-group">
                                 <label for="title">タイトル</label>
@@ -54,11 +54,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="due_date">期限</label>
-                                <input type="text" class="form-control" name="due_date" id="due_date" value="{{ old('due_date') ?? $task->formatted_due_date }}" disabled />
+                                <input type="text" class="form-control" name="due_date" id="due_date" value="{{ old('due_date') ?? $task->formatted_due_date }}" disabled/>
                             </div>
                             <p>上記の項目を削除しようとしています。本当によろしいでしょうか？</p>
                             <div class="text-right">
-                                <button type="button" class="btn btn-primary" onclick="window.location='{{ route('tasks.index', ['id' => $task->folder_id]) }}'">キャンセル</button>
+                                <button type="button" class="btn btn-primary" onclick="window.location='{{ route('tasks.index', ['folder' => $task->folder_id]) }}'">キャンセル</button>
                                 <button type="submit" class="btn btn-primary">削除</button>
                             </div>
                         </form>
